@@ -1,0 +1,7 @@
+{
+  "name": "static-rev-gulp",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Tim James <tjames@tjames.com>",
+  "license": "MIT"
+}
