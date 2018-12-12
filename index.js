@@ -13,10 +13,10 @@ module.exports = (gulp, opts) => {
     const source = require('vinyl-source-stream')
     const buffer = require('vinyl-buffer')
 
-    return browserify('./app/index.js', { debug:true })
+    return browserify('index.js', { debug:true })
       .bundle()
         .on('error', log.error.bind(log, 'Browserify Error'))
-      .pipe(source('app.js'))  // desired output filename to vinyl-source-stream
+      .pipe(source('bundle.js'))  // desired output filename to vinyl-source-stream
       .pipe(buffer())
       .pipe(sourcemaps.init({loadMaps: true})) // loads map from browserify file
          // Add transformation tasks to the pipeline here.
