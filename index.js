@@ -10,7 +10,7 @@ module.exports = (gulp, opts) => {
     const postcss    = require('gulp-postcss')
     const sourcemaps = require('gulp-sourcemaps')
 
-    return gulp.src('style/**/*.css')
+    return gulp.src(['*.css'])                // e.g., index.css; others can be imported from subdirs via postcss-import plugin and @import
       .pipe( sourcemaps.init() )
       .pipe( postcss(opts.postcss || []) )
       .pipe( sourcemaps.write('.') )
