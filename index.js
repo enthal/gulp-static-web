@@ -6,7 +6,7 @@ module.exports = (gulp, opts) => {
 
   gulp.task('build', sequence('rimraf', 'default', 'rev-replace'))
 
-  gulp.task('css', () => {
+  gulp.task('postcss', () => {
     const postcss    = require('gulp-postcss')
     const sourcemaps = require('gulp-sourcemaps')
 

@@ -5,9 +5,9 @@ Opinionated `gulp` tasks for development and build of a static web site, as for 
 - Compiles CSS via `postcss`, using injected plugins, generating sourcemaps.
 - Cache-busts static assets via rev filename thumbprints via `gulp-rev` and `gulp-rev-replace`.
 
-Supplies `build`, `static`, `css` tasks.
+Supplies `build`, `static`, `postcss` tasks.
 
-`build` performs thumbprinting and calls a `default` task (to be supplied by you, the user), which should call `static` and `css` tasks.
+`build` performs thumbprinting and calls a `default` task (to be supplied by you, the user), which should call `static` and `postcss` tasks.
 
 ## Directories
 
@@ -31,7 +31,7 @@ gulpStaticWeb(gulp, {
   ],
 })
 
-gulp.task('default', sequence('static', 'css'))
+gulp.task('default', sequence('static', 'postcss'))
 ```
 
 During development, you might use:
@@ -41,7 +41,7 @@ nodemon \
  -e js,yml,yaml,html,css \
  -w style/ \
  -w gulpfile.js \
- -x gulp css &
+ -x gulp postcss &
 
 nodemon \
  -e js,yml,yaml,html,css \
