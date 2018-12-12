@@ -6,13 +6,23 @@ module.exports = (gulp, opts) => {
 
   gulp.task('build', sequence('rimraf', 'default', 'rev-replace'))
 
+  gulp.task('browserify', () => {
+    const browserify = require('browserify');
+    const source = require('vinyl-source-stream');
+
+    return browserify('./app/index.js')
+      .bundle()
+      .pipe(source('app.js'))  // desired output filename to vinyl-source-stream
+      .pipe(gulp.dest('out'))
+  });
+
   gulp.task('postcss', () => {
     const postcss    = require('gulp-postcss')
     const sourcemaps = require('gulp-sourcemaps')
 
     return gulp.src(['*.css'])                // e.g., index.css; others can be imported from subdirs via postcss-import plugin and @import
       .pipe( sourcemaps.init() )
-      .pipe( postcss(opts.postcss || []) )
+      .pipe( postcss(opts.postcss || []) )   // TODO: separate plugins from other postcss opts (as for syntax)
       .pipe( sourcemaps.write('.') )
       .pipe( gulp.dest('out/') )
   })
