@@ -1,24 +1,31 @@
 
 module.exports = (gulp, opts) => {
   const sequence = require('gulp-sequence').use(gulp)
+  const sourcemaps = require('gulp-sourcemaps')
+  const log = require('gulplog');
   const rev = require('gulp-rev')
   const revReplace = require('gulp-rev-replace')
 
   gulp.task('build', sequence('rimraf', 'default', 'rev-replace'))
 
   gulp.task('browserify', () => {
-    const browserify = require('browserify');
-    const source = require('vinyl-source-stream');
+    const browserify = require('browserify')
+    const source = require('vinyl-source-stream')
+    const buffer = require('vinyl-buffer')
 
-    return browserify('./app/index.js')
+    return browserify('./app/index.js', { debug:true })
       .bundle()
+        .on('error', log.error.bind(log, 'Browserify Error'))
       .pipe(source('app.js'))  // desired output filename to vinyl-source-stream
+      .pipe(buffer())
+      .pipe(sourcemaps.init({loadMaps: true})) // loads map from browserify file
+         // Add transformation tasks to the pipeline here.
+      .pipe(sourcemaps.write('.')) // writes .map file
       .pipe(gulp.dest('out'))
-  });
+  })
 
   gulp.task('postcss', () => {
     const postcss    = require('gulp-postcss')
-    const sourcemaps = require('gulp-sourcemaps')
 
     return gulp.src(['*.css'])                // e.g., index.css; others can be imported from subdirs via postcss-import plugin and @import
       .pipe( sourcemaps.init() )
