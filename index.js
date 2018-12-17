@@ -8,6 +8,9 @@ module.exports = (gulp, opts) => {
 
   gulp.task('build', sequence('rimraf', 'default', 'rev-replace'))
 
+  gulp.task('dev', sequence('rimraf', ['watch', 'budo']))
+  gulp.task('dev:all', sequence('rimraf', ['watch:all', 'budo']))
+
   gulp.task('watch', ['postcss', 'static'], () => {
     gulp.watch(
       ['*.css', 'style/**/*.css', 'css/**/*.css'],
@@ -17,12 +20,36 @@ module.exports = (gulp, opts) => {
       ['static'] )
   })
 
+  const browserifyOpts = opts.browserify || { debug:true }
+
+  gulp.task('budo', done => {
+    const fs = require('fs')
+    args = [{
+      live: true,             // setup live reload
+      dir: 'out',
+      serve: 'bundle.js',
+      browserify: browserifyOpts,
+    }]
+    if (fs.existsSync('index.js'))  args.unshift('index.js')
+    else  console.log('Budō: no index.js; skipping browserify')
+
+    require('budo')( ...args )
+    .on('connect', ev => {
+      console.log('Budō: Server running on:', ev.uri)
+      console.log('LiveReload running on port:', ev.livePort)
+    })
+    .on('update', buffer => {
+      console.log('bundle - %d bytes', buffer.length)
+    })
+    .on('exit', done)
+  })
+
   gulp.task('browserify', () => {
     const browserify = require('browserify')
     const source = require('vinyl-source-stream')
     const buffer = require('vinyl-buffer')
 
-    return browserify('index.js', { debug:true })
+    return browserify('index.js', browserifyOpts)
       .bundle()
         .on('error', log.error.bind(log, 'Browserify Error'))
       .pipe(source('bundle.js'))  // desired output filename to vinyl-source-stream

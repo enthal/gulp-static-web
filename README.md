@@ -7,11 +7,17 @@ Opinionated `gulp` tasks for development and build of a static web site, as for 
 
 Supplies `build`, `static`, `postcss` tasks.
 
-`build` performs thumbprinting and calls a `default` task (to be supplied by you, the user), which should call `static` and `postcss` tasks.
+`build` performs thumbprinting after calling the `default` task (to be supplied by you, the user), which should call `static`, `postcss`, and `browserify` tasks, as needed.
 
-## Directories
 
-**TODO**
+## Options
+
+**TODO:**  _Document_
+
+## Files and Directories
+
+**TODO:**  _List, and allow for customization_
+
 
 ## Usage
 
@@ -20,38 +26,51 @@ Your `gulpfile.js` might look like:
 ```javascript
 const gulp = require('gulp')
 const sequence = require('gulp-sequence').use(gulp)
-const gulpStaticWeb = require('gulp-static-web')
 
-gulpStaticWeb(gulp, {
+require('gulp-static-web')( gulp, {
   postcss: [
+    // plugins:
     require('postcss-import'),
     require('precss'),
     require('postcss-nested-vars'),
     // ...
   ],
-})
+} )
 
 gulp.task('default', sequence('static', ['browserify', 'postcss']))
 ```
 
-During development, you might use:
+`task('default')` can be extended as you please.
+
+
+## Development mode
+
+Launch a static web server via `budo` (Browserify + Watchify + LiveReload), watching for changes handled by `static` and `postcss` tasks.
 
 ```bash
-nodemon \
- -e js \
- -w app/ \
- -w gulpfile.js \
- -x gulp browserify &
-
-nodemon \
- -e js,yml,yaml,html,css \
- -w style/ \
- -w gulpfile.js \
- -x gulp postcss &
-
-nodemon \
- -e js,yml,yaml,html,css \
- -w static/ \
- -w gulpfile.js \
- -x gulp static &
+gulp dev
 ```
+
+If you need to extend this:
+
+```bash
+gulp dev:all
+```
+... to which you must supply task `'watch:all'`, which should depend on task `watch`. E.g., to include a task `'template'`:
+
+```javascript
+gulp.task('watch:all', ['watch', 'template'], () => {
+  gulp.watch( ['templates/**'], ['template'] )
+})
+```
+
+
+## Production build
+
+```bash
+gulp build
+```
+
+`build` performs thumbprinting after calling the `default` task (to be supplied by you, the user), which should call `static`, `postcss`, and `browserify` tasks, as needed.
+
+**TODO:**  _Optimize (minify, etc) and allow for more customization_
