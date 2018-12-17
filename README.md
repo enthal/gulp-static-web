@@ -10,6 +10,10 @@ Supplies `build`, `static`, `postcss` tasks.
 `build` performs thumbprinting after calling the `default` task (to be supplied by you, the user), which should call `static`, `postcss`, and `browserify` tasks, as needed.
 
 
+## Example and starter project
+
+See [`gulp-static-web-demo`](../gulp-static-web-demo), which may be used as a starter project!
+
 ## Options
 
 **TODO:**  _Document_
