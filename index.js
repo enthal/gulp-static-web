@@ -71,7 +71,7 @@ module.exports = (gulp, opts) => {
   })
 
   gulp.task('static', () =>
-    gulp.src('static/**')
+    gulp.src(['index.html','static/**'])
       .pipe(gulp.dest('out'))
   )
 
