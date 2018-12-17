@@ -8,10 +8,13 @@ module.exports = (gulp, opts) => {
 
   gulp.task('build', sequence('rimraf', 'default', 'rev-replace'))
 
-  gulp.task('watch', () => {
+  gulp.task('watch', ['postcss', 'static'], () => {
     gulp.watch(
-      ['*.css','style/**/*.css','css/**/*.css'],
+      ['*.css', 'style/**/*.css', 'css/**/*.css'],
       ['postcss'] )
+    gulp.watch(
+      ['static/**'],
+      ['static'] )
   })
 
   gulp.task('browserify', () => {
@@ -41,7 +44,7 @@ module.exports = (gulp, opts) => {
   })
 
   gulp.task('static', () =>
-    gulp.src('./static/**')
+    gulp.src('static/**')
       .pipe(gulp.dest('out'))
   )
 
