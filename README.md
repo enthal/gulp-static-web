@@ -12,7 +12,7 @@ Supplies `build`, `static`, `postcss` tasks.
 
 ## Example and starter project
 
-See [`gulp-static-web-demo`](../gulp-static-web-demo), which may be used as a starter project!
+See [`gulp-static-web-demo`](https://github.com/enthal/gulp-static-web-demo), which may be used as a starter project!
 
 ## Options
 
