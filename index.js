@@ -8,6 +8,12 @@ module.exports = (gulp, opts) => {
 
   gulp.task('build', sequence('rimraf', 'default', 'rev-replace'))
 
+  gulp.task('watch', () => {
+    gulp.watch(
+      ['*.css','style/**/*.css','css/**/*.css'],
+      ['postcss'] )
+  })
+
   gulp.task('browserify', () => {
     const browserify = require('browserify')
     const source = require('vinyl-source-stream')
