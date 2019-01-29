@@ -36,7 +36,8 @@ module.exports = (gulp, opts) => {
     require('budo')( ...args )
     .on('connect', ev => {
       console.log('Budō: Server running on:', ev.uri)
-      console.log('LiveReload running on port:', ev.livePort)
+      // console.log('LiveReload running on port:', ev.livePort)   // BROKEN
+      // console.log('Everything:', ev)
     })
     .on('update', buffer => {
       console.log('bundle - %d bytes', buffer.length)
@@ -79,7 +80,7 @@ module.exports = (gulp, opts) => {
   // "Private" tasks, implementation details
 
   gulp.task('revision', () =>
-    gulp.src(['out/**', '!**/*.html', '!**/favicon.ico'])
+    gulp.src(['out/**', '!**/*.html', '!**/*.pdf', '!**/favicon.ico'])
       .pipe(rev())
       .pipe(gulp.dest('build'))
       .pipe(rev.manifest())
@@ -87,7 +88,7 @@ module.exports = (gulp, opts) => {
   )
 
   gulp.task('no-revision', () =>
-    gulp.src(['out/**/*.html', 'out/**/favicon.ico'])
+    gulp.src(['out/**/*.html', 'out/**/*.pdf', 'out/**/favicon.ico'])
       .pipe(gulp.dest('build'))
   )
 
