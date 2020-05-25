@@ -66,7 +66,7 @@ module.exports = (gulp, opts) => {
 
     return gulp.src(['*.css'])                // e.g., index.css; others can be imported from subdirs via postcss-import plugin and @import
       .pipe( sourcemaps.init() )
-      .pipe( postcss(opts.postcss || []) )   // TODO: separate plugins from other postcss opts (as for syntax)
+      .pipe( postcss(opts.postcss || [], { parser: opts.postcssParser }) )   // TODO: separate plugins from other postcss opts (as for syntax)
       .pipe( sourcemaps.write('.') )
       .pipe( gulp.dest('out/') )
   })
